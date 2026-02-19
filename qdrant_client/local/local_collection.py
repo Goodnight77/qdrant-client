@@ -37,8 +37,11 @@ from qdrant_client.local.distances import (
     calculate_recommend_best_scores,
     distance_to_order,
     calculate_recommend_sum_scores,
-    calculate_distance_core, calculate_naive_feedback_query, NaiveFeedbackQuery,
-    FeedbackItem as DistFeedbackItem, NaiveFeedbackCoefficients,
+    calculate_distance_core,
+    calculate_naive_feedback_query,
+    NaiveFeedbackQuery,
+    FeedbackItem as DistFeedbackItem,
+    NaiveFeedbackCoefficients,
 )
 from qdrant_client.local.multi_distances import (
     MultiQueryVector,
@@ -642,7 +645,7 @@ class LocalCollection:
             # sparse vector query must be sorted by indices for dot product to work with persisted vectors
             query_vector = sort_sparse_vector(query_vector)
             scores = calculate_distance_sparse(query_vector, vectors)
-        elif isinstance(query_vector,  NaiveFeedbackQuery):
+        elif isinstance(query_vector, NaiveFeedbackQuery):
             scores = calculate_naive_feedback_query(query_vector, vectors, distance)
         else:
             raise (ValueError(f"Unsupported query vector type {type(query_vector)}"))
@@ -854,7 +857,11 @@ class LocalCollection:
                 with_vectors=with_vectors,
             )
 
-            rescored = [point for point in rescored if score_threshold is None or point.score >= score_threshold]
+            rescored = [
+                point
+                for point in rescored
+                if score_threshold is None or point.score >= score_threshold
+            ]
 
             return rescored[offset:]
         else:
@@ -2320,7 +2327,6 @@ class LocalCollection:
             )
         else:
             raise ValueError(f"Unsupported feedback strategy: {strategy}")
-
 
     def _update_point(self, point: models.PointStruct) -> None:
         if isinstance(point.id, uuid.UUID):

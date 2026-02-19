@@ -953,9 +953,7 @@ class TestSimpleSearcher:
             limit=10,
         )
 
-    def relevance_feedback_query(
-            self, client: QdrantBase
-    ) -> models.QueryResponse:
+    def relevance_feedback_query(self, client: QdrantBase) -> models.QueryResponse:
         return client.query_points(
             collection_name=COLLECTION_NAME,
             query=models.RelevanceFeedbackQuery(
@@ -969,7 +967,7 @@ class TestSimpleSearcher:
                     ],
                     strategy=models.NaiveFeedbackStrategy(
                         naive=models.NaiveFeedbackStrategyParams(a=0.5, b=1.0, c=0.7)
-                    )
+                    ),
                 )
             ),
             using="text",
