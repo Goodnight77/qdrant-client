@@ -111,6 +111,9 @@ def evaluate_expression(
             try:
                 return math.pow(base, exponent)
             except OverflowError:
+                # Result exceeds float range; fall through to the
+                # non-finite error below so all unrepresentable results
+                # surface through one path
                 pass
 
         raise_non_finite_error(f"{base}^{exponent}")
@@ -134,6 +137,8 @@ def evaluate_expression(
             try:
                 return math.log10(value)
             except OverflowError:
+                # math.log10 only overflows on subnormal-edge inputs;
+                # fall through so the non-finite error path handles it.
                 pass
 
         raise_non_finite_error(f"log10({value})")
@@ -145,6 +150,8 @@ def evaluate_expression(
             try:
                 return math.log(value)
             except OverflowError:
+                # math.log only overflows on subnormal-edge inputs;
+                # fall through so the non-finite error path handles it.
                 pass
 
         raise_non_finite_error(f"ln({value})")
